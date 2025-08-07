@@ -3,6 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from models import db, User, Post
 from forms import RegistrationForm, LoginForm, PostForm
+import os
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+    port = int(os.environ.get("PORT", 5000))   # 从环境变量读取端口，默认5000
+    app.run(host="0.0.0.0", port=port, debug=True)
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '你的随机密钥，请更换为实际值'
@@ -100,7 +108,14 @@ def delete_post(post_id):
     return redirect(url_for('home'))
 
 # 程序入口
+#if __name__ == '__main__':
+   # with app.app_context():
+    #    db.create_all()
+   # app.run(debug=True)
+   
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))   # 从环境变量读取端口，默认5000
+    app.run(host="0.0.0.0", port=port, debug=True)
