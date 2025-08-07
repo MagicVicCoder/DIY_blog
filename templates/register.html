@@ -1,0 +1,21 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>注册 - 我的博客</title></head>
+<body>
+  <h2>注册</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    {{ form.username.label }} {{ form.username() }}<br>
+    {{ form.password.label }} {{ form.password() }}<br>
+    {{ form.confirm.label }}  {{ form.confirm() }}<br>
+    {{ form.submit() }}
+  </form>
+  <p>已有账号？<a href="{{ url_for('login') }}">登录</a></p>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, msg in messages %}
+      <div class="flash {{ category }}">{{ msg }}</div>
+    {% endfor %}
+  {% endwith %}
+</body>
+</html>

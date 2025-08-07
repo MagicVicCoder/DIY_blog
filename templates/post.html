@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ post.title }} - 我的博客</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>
+      <a href="{{ url_for('home') }}">← 返回首页</a>
+      {{ post.title }}
+    </h1>
+    <nav>
+      {% if current_user.is_authenticated %}
+        <span>你好，{{ current_user.username }}！</span> |
+        <a href="{{ url_for('new_post') }}">发布文章</a> |
+        <a href="{{ url_for('logout') }}">登出</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">登录</a> |
+        <a href="{{ url_for('register') }}">注册</a>
+      {% endif %}
+    </nav>
+    <hr />
+  </header>
+
+  <main>
+    <article>
+      <p class="meta">
+        作者：{{ post.author.username }} |
+        发布于：{{ post.created.strftime('%Y-%m-%d %H:%M') }}
+      </p>
+      <div class="content">
+        {{ post.content | safe }}
+      </div>
+      {% if current_user.is_authenticated and
+            (current_user.id == post.author_id or current_user.is_admin) %}
+        <form action="{{ url_for('delete_post', post_id=post.id) }}"
+              method="post" style="margin-top:20px;">
+          <button type="submit">删除本文</button>
+        </form>
+      {% endif %}
+    </article>
+  </main>
+</body>
+</html>
